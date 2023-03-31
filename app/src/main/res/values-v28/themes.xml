@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Text.Paragraph">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_50</item>
+        <item name="android:lineHeight">26sp</item>
+    </style>
+</resources>

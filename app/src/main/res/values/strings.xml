@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Github Users</string>
+
+    <string name="default_profile_content_description">User profile image</string>
+    <string name="default_username">sidiqpermana</string>
+    <string name="default_users_count_text">0 User ditemukan</string>
+
+    <string name="users_count">%d User ditemukan</string>
+
+    <string name="search_hint">Cari username</string>
+
+    <string name="default_repository_text">100 Repositories</string>
+    <string name="default_following_text">100 Following</string>
+    <string name="default_followers_text">100 Followers</string>
+
+    <string name="repository_text">%d Repositories</string>
+    <string name="following_text">%d Following</string>
+    <string name="followers_text">%d Followers</string>
+    <string name="default_name">Sidiq Permana</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_tab_following">Ini halaman following</string>
+    <string name="content_tab_followers">Ini tab followers</string>
+    <string name="tab_followers_text">Followers</string>
+    <string name="tab_following_text">Following</string>
+</resources>
