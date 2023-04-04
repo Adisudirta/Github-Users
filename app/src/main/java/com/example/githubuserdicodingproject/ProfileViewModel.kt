@@ -1,6 +1,8 @@
 package com.example.githubuserdicodingproject
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +10,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.githubuserdicodingproject.data.remote.ApiConfig
 import com.example.githubuserdicodingproject.data.responses.DetailUserResponse
 import com.example.githubuserdicodingproject.data.responses.UserResponse
+import com.example.githubuserdicodingproject.database.FavoriteUser
+import com.example.githubuserdicodingproject.repository.FavoriteUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ProfileViewModel: ViewModel(){
+class ProfileViewModel(application: Application) : ViewModel(){
+    private val mFavoriteUserRepository: FavoriteUserRepository = FavoriteUserRepository(application)
+
+    private val _isFavoriteUser = MutableLiveData(false)
+    val isFavoriteUser: LiveData<Boolean> =  _isFavoriteUser
 
     private val _isProfileLoading = MutableLiveData<Boolean>()
     val isProfileLoading: LiveData<Boolean> = _isProfileLoading
@@ -34,6 +42,36 @@ class ProfileViewModel: ViewModel(){
 
     companion object{
         const val TAG = "ProfileViewModel"
+    }
+
+    fun setIsFavorite(isFavorite: Boolean){
+        _isFavoriteUser.value = isFavorite
+    }
+
+    fun getAllFavoriteUser(): LiveData<List<FavoriteUser>> = mFavoriteUserRepository.getAllFavoriteUser()
+
+    fun modifyFavorite(userInfo: FavoriteUser, activity: ProfileActivity){
+        if(_isFavoriteUser.value != true){
+            insert(userInfo)
+            showNotification("Ditambahkan pada favorite", activity)
+        }else{
+            delete(userInfo)
+            showNotification("Dihilangkan dari favorite", activity)
+        }
+    }
+
+    private fun showNotification(message: String, activity: ProfileActivity){
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun insert(favoriteUser: FavoriteUser){
+        _isFavoriteUser.value = true
+        mFavoriteUserRepository.insert(favoriteUser)
+    }
+
+    private fun delete(favoriteUser: FavoriteUser){
+        _isFavoriteUser.value = false
+        mFavoriteUserRepository.delete(favoriteUser)
     }
 
     fun getDetailUser(username: String) = viewModelScope.launch {

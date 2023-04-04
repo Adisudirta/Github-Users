@@ -24,6 +24,46 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="10000dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="16dp"
+                android:background="@null"
+                android:labelFor="@+id/btnFavorite"
+                android:contentDescription="@string/favorite_image_button"
+                android:padding="16dp"
+                android:src="@drawable/rounded_button_background" />
+
+            <ImageView
+                android:id="@+id/iconFavoriteBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/favorite_icon"
+                android:src="@drawable/baseline_favorite_border_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iconFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/favorite_icon"
+                android:src="@drawable/baseline_favorite_24"
+                tools:visibility="gone" />
+
+        </RelativeLayout>
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgDetailProfile"
             android:layout_width="120dp"
@@ -132,14 +172,14 @@
             android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:tabTextColor="@color/black_80" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="340dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabs" />
     </androidx.constraintlayout.widget.ConstraintLayout>

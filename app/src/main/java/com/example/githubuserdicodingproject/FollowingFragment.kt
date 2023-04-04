@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.githubuserdicodingproject.adapters.UsersRecyclerViewAdapter
 import com.example.githubuserdicodingproject.data.entities.UserCard
 import com.example.githubuserdicodingproject.data.responses.UserResponse
+import com.example.githubuserdicodingproject.helper.ViewModelFactory
 
 class FollowingFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -30,10 +31,7 @@ class FollowingFragment : Fragment() {
         adapter = UsersRecyclerViewAdapter(requireActivity(), emptyList())
         recyclerView.adapter = adapter
 
-        val viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[ProfileViewModel::class.java]
+        val viewModel = obtainViewModel(this)
 
         viewModel.isFollowingLoading.observe(viewLifecycleOwner){ isFollowingLoading ->
             showLoading(isFollowingLoading)
@@ -46,6 +44,11 @@ class FollowingFragment : Fragment() {
         arguments?.getString("username")?.let { viewModel.getFollowing(it) }
 
         return view
+    }
+
+    private fun obtainViewModel(fragment: Fragment): ProfileViewModel {
+        val factory = ViewModelFactory.getInstance(fragment.requireActivity().application)
+        return ViewModelProvider(fragment, factory)[ProfileViewModel::class.java]
     }
 
     private fun showLoading(isLoading: Boolean) {

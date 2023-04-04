@@ -23,4 +23,10 @@
     <string name="content_tab_followers">Ini tab followers</string>
     <string name="tab_followers_text">Followers</string>
     <string name="tab_following_text">Following</string>
+    <string name="default_favorite_text_button">Add to favorite</string>
+    <string name="favorite_image_button">Favorite image button</string>
+    <string name="favorite_icon">Favorite icon</string>
+    <string name="menu_favorite_text">Favorite</string>
+    <string name="menu_theme_text">Theme</string>
+    <string name="dark_mode">Turn on dark mode</string>
 </resources>

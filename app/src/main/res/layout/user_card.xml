@@ -37,8 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgCardProfile"
             app:layout_constraintTop_toTopOf="parent"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnToDetail"

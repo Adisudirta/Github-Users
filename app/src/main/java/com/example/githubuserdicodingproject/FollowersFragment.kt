@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubuserdicodingproject.adapters.UsersRecyclerViewAdapter
 import com.example.githubuserdicodingproject.data.entities.UserCard
 import com.example.githubuserdicodingproject.data.responses.UserResponse
+import com.example.githubuserdicodingproject.helper.ViewModelFactory
 
 class FollowersFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -30,10 +32,7 @@ class FollowersFragment : Fragment() {
         adapter = UsersRecyclerViewAdapter(requireActivity(), emptyList())
         recyclerView.adapter = adapter
 
-        val viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[ProfileViewModel::class.java]
+        val viewModel = obtainViewModel(this)
 
         viewModel.isFollowersLoading.observe(viewLifecycleOwner){ isFollowersLoading ->
             showLoading(isFollowersLoading)
@@ -46,6 +45,11 @@ class FollowersFragment : Fragment() {
         arguments?.getString("username")?.let { viewModel.getFollowers(it) }
 
         return view
+    }
+
+    private fun obtainViewModel(fragment: Fragment): ProfileViewModel {
+        val factory = ViewModelFactory.getInstance(fragment.requireActivity().application)
+        return ViewModelProvider(fragment, factory)[ProfileViewModel::class.java]
     }
 
     private fun showLoading( isLoading: Boolean) {

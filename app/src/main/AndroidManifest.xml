@@ -22,14 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".ProfileActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:label="Setting"
+            android:name=".ThemeActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:label="Favorite"
+            android:name=".FavoriteActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
     </application>

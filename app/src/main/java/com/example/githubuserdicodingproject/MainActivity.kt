@@ -1,19 +1,30 @@
 package com.example.githubuserdicodingproject
 
+
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuserdicodingproject.adapters.UsersRecyclerViewAdapter
-import com.example.githubuserdicodingproject.databinding.ActivityMainBinding
 import com.example.githubuserdicodingproject.data.entities.UserCard
 import com.example.githubuserdicodingproject.data.responses.UserResponse
+import com.example.githubuserdicodingproject.databinding.ActivityMainBinding
+import com.example.githubuserdicodingproject.helper.ThemeViewModelFactory
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,7 +38,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mainViewModel by viewModels<MainViewModel>()
+        val pref = SettingPreferences.getInstance(dataStore)
+        val mainViewModel = ViewModelProvider(
+            this,
+            ThemeViewModelFactory(pref)
+        )[MainViewModel::class.java]
+
+        mainViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
 
         mainViewModel.isLoading.observe(this){isLoading ->
             showLoading(isLoading)
@@ -68,5 +91,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuFavaorite -> {
+                val moveIntent = Intent(this@MainActivity, FavoriteActivity::class.java)
+                startActivity(moveIntent)
+            }
+            R.id.menuTheme -> {
+                val moveIntent = Intent(this@MainActivity, ThemeActivity::class.java)
+                startActivity(moveIntent)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

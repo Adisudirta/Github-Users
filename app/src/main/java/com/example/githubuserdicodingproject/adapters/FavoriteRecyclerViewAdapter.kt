@@ -8,29 +8,39 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubuserdicodingproject.ProfileActivity
 import com.example.githubuserdicodingproject.R
-import com.example.githubuserdicodingproject.data.entities.UserCard
+import com.example.githubuserdicodingproject.database.FavoriteUser
+import com.example.githubuserdicodingproject.helper.FavoriteUserDiffCallback
 
-class UsersRecyclerViewAdapter(private val context: Context, private val users: List<UserCard>): RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>() {
+class FavoriteRecyclerViewAdapter(private val context: Context ): RecyclerView.Adapter<FavoriteRecyclerViewAdapter.ViewHolder>() {
+
+    private val users = ArrayList<FavoriteUser>()
+    fun setListFavorite(listNotes: List<FavoriteUser>) {
+        val diffCallback = FavoriteUserDiffCallback(this.users, listNotes)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.users.clear()
+        this.users.addAll(listNotes)
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) =
         ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.user_card, viewGroup, false))
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.tvCardUserName.text = users[position].userName
-        viewHolder.imgCardProfile.contentDescription = users[position].userName
+        viewHolder.tvCardUserName.text = users[position].username
+        viewHolder.imgCardProfile.contentDescription = users[position].username
 
         Glide.with(viewHolder.itemView.context)
-            .load(users[position].urlImageProfile)
+            .load(users[position].avatarUrl)
             .into(viewHolder.imgCardProfile)
 
         viewHolder.btnToDetail.setOnClickListener {
             val intent = Intent(context, ProfileActivity::class.java)
-            intent.putExtra(ProfileActivity.EXTRA_AVATAR, users[position].urlImageProfile)
-            intent.putExtra(ProfileActivity.EXTRA_USERNAME, users[position].userName)
+            intent.putExtra(ProfileActivity.EXTRA_USERNAME, users[position].username)
             context.startActivity(intent)
         }
     }

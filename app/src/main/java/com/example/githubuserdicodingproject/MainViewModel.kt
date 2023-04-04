@@ -10,8 +10,9 @@ import com.example.githubuserdicodingproject.data.responses.SearchResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.lifecycle.asLiveData
 
-class MainViewModel: ViewModel(){
+class MainViewModel(private val pref: SettingPreferences): ViewModel(){
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -21,6 +22,16 @@ class MainViewModel: ViewModel(){
 
     companion object{
         const val TAG = "MainViewModel"
+    }
+
+    fun getThemeSettings(): LiveData<Boolean> {
+        return pref.getThemeSetting().asLiveData()
+    }
+
+    fun saveThemeSetting(isDarkModeActive: Boolean) {
+        viewModelScope.launch {
+            pref.saveThemeSetting(isDarkModeActive)
+        }
     }
 
     fun findUsers(query: String) = viewModelScope.launch {
